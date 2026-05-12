@@ -5,6 +5,7 @@ import json
 import os
 import re
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import urljoin
@@ -56,12 +57,20 @@ def save_state(state):
 
 
 def fetch_html():
-    # Site occasionally serves cold requests in 30s+; keep connect tight, read generous.
+    # Site occasionally serves cold requests slowly; one inline retry smooths that out.
+    # After both attempts fail we propagate, main() logs it, exit 3, next cron retries.
     timeout = httpx.Timeout(connect=10.0, read=60.0, write=10.0, pool=10.0)
     with httpx.Client(headers=HEADERS, timeout=timeout, follow_redirects=True) as client:
-        resp = client.get(URL)
-        resp.raise_for_status()
-        return resp.text
+        for attempt in range(2):
+            try:
+                resp = client.get(URL)
+                resp.raise_for_status()
+                return resp.text
+            except httpx.RequestError as e:
+                if attempt == 1:
+                    raise
+                print(f"fetch attempt 1 failed ({e!r}); retrying in 3s", file=sys.stderr)
+                time.sleep(3)
 
 
 def parse_articles(html):
