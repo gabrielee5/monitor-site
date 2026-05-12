@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup
 URL = "https://www.comune.latina.it/home/novita.html"
 STATE_FILE = Path(__file__).parent / "state.json"
 ROME = ZoneInfo("Europe/Rome")
-ACTIVE_HOURS = range(8, 18)  # 08:00–17:59 Europe/Rome inclusive
+ACTIVE_HOURS = range(8, 19)  # 08:00–18:59 Europe/Rome inclusive
 
 KEYWORDS = [
     re.compile(r"carta\s+d['’\s]*identit", re.IGNORECASE),
@@ -167,7 +167,7 @@ def main():
     if sent_any_match:
         state["last_match_date"] = today
 
-    if now.hour == 17:
+    if now.hour >= 17:
         already_summarized = state["last_eod_date"] == today
         matched_today = state["last_match_date"] == today
         if not already_summarized and not matched_today:

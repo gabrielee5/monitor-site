@@ -2,9 +2,11 @@ name: Monitor CIE news
 
 on:
   schedule:
-    # 06:00–16:00 UTC, hourly. Covers 08–17 Europe/Rome in both CET and CEST;
-    # main.py filters the outer-edge run via zoneinfo.
-    - cron: '0 6-16 * * *'
+    # 06:00–17:00 UTC, hourly. Covers 08–18 Europe/Rome in both CET and CEST;
+    # main.py filters outer-edge runs via zoneinfo. EOD recap fires on the
+    # first run with Rome hour >= 17, with a fallback at 18 if the first is
+    # delayed/skipped by GitHub Actions cron.
+    - cron: '0 6-17 * * *'
   workflow_dispatch:
 
 permissions:
