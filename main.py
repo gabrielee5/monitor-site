@@ -149,7 +149,7 @@ def main():
 
     sent_any_match = False
     for url, title in new_matches:
-        msg = f"🆔 CIE/anagrafe news — comune.latina.it\n\n{title}\n\n{url}"
+        msg = f"✅ CIE/anagrafe news — comune.latina.it\n\n{title}\n\n{url}"
         if args.dry_run:
             print(f"[DRY] match: {title} | {url}")
             seen.add(url)
@@ -171,7 +171,7 @@ def main():
         already_summarized = state["last_eod_date"] == today
         matched_today = state["last_match_date"] == today
         if not already_summarized and not matched_today:
-            msg = "✅ No CIE-related news today on comune.latina.it"
+            msg = "❌ No CIE-related news today on comune.latina.it"
             if args.dry_run:
                 print("[DRY] would send EOD summary")
                 state["last_eod_date"] = today
