@@ -1,13 +1,14 @@
 name: Monitor CIE news
 
 on:
-  schedule:
-    # 06:00–19:00 UTC, hourly. Active fetch window is 08–18 Europe/Rome
-    # (filtered in main.py). Runs 17–19 UTC (= 19–21 Rome CEST / 18–20 CET)
-    # are EOD-only safety nets — GitHub Actions cron is routinely delayed
-    # 30+ min at the top of the hour, so several late attempts guarantee
-    # the recap fires.
-    - cron: '0 6-19 * * *'
+  # Schedule paused — job complete. Re-enable by uncommenting the cron line.
+  # schedule:
+  #   # 06:00–19:00 UTC, hourly. Active fetch window is 08–18 Europe/Rome
+  #   # (filtered in main.py). Runs 17–19 UTC (= 19–21 Rome CEST / 18–20 CET)
+  #   # are EOD-only safety nets — GitHub Actions cron is routinely delayed
+  #   # 30+ min at the top of the hour, so several late attempts guarantee
+  #   # the recap fires.
+  #   - cron: '0 6-19 * * *'
   workflow_dispatch:
 
 permissions:
